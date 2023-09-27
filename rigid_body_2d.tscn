@@ -48,7 +48,7 @@ animations = [{
 "speed": 3.0
 }]
 
-[node name="EnemyRigidBody2D" type="RigidBody2D"]
+[node name="EnemyRigidBody2D" type="RigidBody2D" groups=["mobs"]]
 position = Vector2(121, 102)
 collision_mask = 0
 gravity_scale = 0.0

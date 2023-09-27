@@ -19,12 +19,16 @@ public partial class Main : Node
 
 	public void GameOver()
 	{
+		GetNode<AudioStreamPlayer>("Music").Stop();
+		GetNode<AudioStreamPlayer>("DeathSound").Play();
 		GetNode<Timer>("MobTimer").Stop();
 		GetNode<Timer>("ScoreTimer").Stop();
+		GetNode<CanvasLayer>("HUD").ShowGameOver();
 	}
 
 	public void NewGame()
 	{
+		GetTree().CallGroup("mobs", Node.MethodName.QueueFree);
 		_score = 0;
 
 		var player = GetNode<player>("Player");
@@ -32,11 +36,17 @@ public partial class Main : Node
 		player.Start(startPosition.Position);
 
 		GetNode<Timer>("StartTimer").Start();
+
+		var hud = GetNode<CanvasLayer>("HUD");
+		hud.UpdateScore(_score);
+		hud.ShowMessage("Get Ready!");
+		GetNode<AudioStreamPlayer>("Music").Play();
 	}
 
 	private void OnScoreTimerTimeout()
 	{
 		_score++;
+		GetNode<CanvasLayer>("HUD").UpdateScore(_score);
 	}
 
 	private void OnStartTimerTimeout()
